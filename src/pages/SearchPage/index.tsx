@@ -19,6 +19,11 @@ class SearchPage extends React.Component<object, SearchPageState> {
     };
   }
 
+  componentDidMount() {
+    const savedQuery = localStorage.getItem('searchQuery') || '';
+    this.handleSearch(savedQuery);
+  }
+  
   handleSearch = async (query: string) => {
     this.setState({ isLoading: true });
     const data = await searchLaureat(query);
