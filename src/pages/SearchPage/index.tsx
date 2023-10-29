@@ -5,21 +5,31 @@ import './SearchPage.module.css';
 import { searchLaureat } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 
-const SearchPage: React.FC = () => {
-  const [laureates, setLaureates] = React.useState<LaureateDTO[]>([]);
-  
-  const handleSearch = async (query: string) => {
+interface SearchPageState {
+  laureates: LaureateDTO[];
+}
+
+class SearchPage extends React.Component<object, SearchPageState> {
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      laureates: [],
+    };
+  }
+
+  handleSearch = async (query: string) => {
     const data = await searchLaureat(query);
-    console.log("🚀 ~ file: index.tsx:12 ~ handleSearch ~ data:", data);
-    setLaureates(data);
+    this.setState({ laureates: data });
   };
 
-  return (
-    <div>
-      <SearchBar onSearch={handleSearch} />
-      <SearchResultList laureates={laureates} />
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <SearchBar onSearch={this.handleSearch} />
+        <SearchResultList laureates={this.state.laureates} />
+      </div>
+    );
+  }
 }
 
 export default SearchPage;
