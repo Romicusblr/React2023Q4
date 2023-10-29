@@ -29,8 +29,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={this.state.query}
           onChange={this.handleChange}
           placeholder="Search..."

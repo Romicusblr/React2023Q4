@@ -1,4 +1,4 @@
-import { LaureateDTO } from "./laureate.dto";
+import { LaureateDTO } from './laureate.dto';
 
 export interface SearchLaureatesDTO {
   laureates: LaureateDTO[];
