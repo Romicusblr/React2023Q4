@@ -7,6 +7,7 @@ import { LaureateDTO } from '../../api/dtos/laureate.dto';
 
 interface SearchPageState {
   laureates: LaureateDTO[];
+  isLoading: boolean;
 }
 
 class SearchPage extends React.Component<object, SearchPageState> {
@@ -14,19 +15,26 @@ class SearchPage extends React.Component<object, SearchPageState> {
     super(props);
     this.state = {
       laureates: [],
+      isLoading: false,
     };
   }
 
   handleSearch = async (query: string) => {
+    this.setState({ isLoading: true });
     const data = await searchLaureat(query);
     this.setState({ laureates: data });
+    this.setState({ isLoading: false });
   };
 
   render() {
     return (
       <div>
         <SearchBar onSearch={this.handleSearch} />
-        <SearchResultList laureates={this.state.laureates} />
+        {this.state.isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <SearchResultList laureates={this.state.laureates} />
+        )}
       </div>
     );
   }
