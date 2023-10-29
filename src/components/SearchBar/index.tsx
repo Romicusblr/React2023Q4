@@ -4,25 +4,41 @@ interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = React.useState('');
+interface SearchBarState {
+  query: string;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
+class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
+  constructor(props: SearchBarProps) {
+    super(props);
+    this.state = {
+      query: localStorage.getItem('searchQuery') || '',
+    };
+  }
+
+  handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(query);
+    this.props.onSearch(this.state.query);
+    localStorage.setItem('searchQuery', this.state.query);
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text" 
-        value={query}
-        onChange={(e) => setQuery(e.target.value.trim())}
-        placeholder="Search..."
-      />
-      <button type="submit">Search</button>
-    </form>
-  );
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ query: e.target.value.trim() });
+  };
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input 
+          type="text" 
+          value={this.state.query}
+          onChange={this.handleChange}
+          placeholder="Search..."
+        />
+        <button type="submit">Search</button>
+      </form>
+    );
+  }
 }
 
 export default SearchBar;
