@@ -20,9 +20,13 @@ export const searchLaureat = async (
   url.searchParams.append('limit', String(limit));
   url.searchParams.append('offset', String(offset));
 
-  const response = await fetch(url.toString());
+  const response = await fetch(url.toString(), {
+    method: 'GET',
+    mode: 'cors',
+  });
 
   if (!response.ok) {
+    console.log('🚀 ~ file: index.ts:28 ~ response:', response);
     throw new Error('Network response was not ok'); // Consider more detailed error handling
   }
 

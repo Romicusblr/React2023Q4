@@ -15,7 +15,7 @@ class LaureateCard extends React.Component<LaureateCardProps> {
         <h2>{laureate.knownName?.en}</h2>
         <p><strong>Gender:</strong> {laureate.gender}</p>
         <p><strong>Birth Date:</strong> {laureate.birth.date}</p>
-        <p><strong>Birth Place:</strong> {laureate.birth.place.city?.en}, {laureate.birth.place.country?.en}</p>
+        <p><strong>Birth Place:</strong> {laureate.birth.place?.city?.en}, {laureate.birth.place?.country?.en}</p>
         
         <h3>Nobel Prizes:</h3>
         {laureate.nobelPrizes.map((prize, index) => (
