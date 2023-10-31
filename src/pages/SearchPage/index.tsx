@@ -36,14 +36,14 @@ class SearchPage extends React.Component<object, SearchPageState> {
   render() {
     return (
       <div className="flex flex-col justify-center items-center">
-        <ErrorBoundary>
-          <SearchBar onSearch={this.handleSearch} />
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
+        <SearchBar onSearch={this.handleSearch} />
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <ErrorBoundary>
             <SearchResultList laureates={this.state.laureates} />
-          )}
-        </ErrorBoundary>
+          </ErrorBoundary>
+        )}
       </div>
     );
   }
