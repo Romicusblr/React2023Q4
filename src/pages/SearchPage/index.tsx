@@ -5,6 +5,7 @@ import './SearchPage.module.css';
 import { searchLaureat } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 import ErrorBoundary from '../../components/ErrorBoundary';
+import Loader from '../../components/Loader';
 
 interface SearchPageState {
   laureates: LaureateDTO[];
@@ -34,11 +35,11 @@ class SearchPage extends React.Component<object, SearchPageState> {
 
   render() {
     return (
-      <div>
+      <div className="flex flex-col justify-center items-center">
         <ErrorBoundary>
           <SearchBar onSearch={this.handleSearch} />
           {this.state.isLoading ? (
-            <p>Loading...</p>
+            <Loader />
           ) : (
             <SearchResultList laureates={this.state.laureates} />
           )}
