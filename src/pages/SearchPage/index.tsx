@@ -4,6 +4,7 @@ import SearchResultList from '../../components/LaureateList';
 import './SearchPage.module.css';
 import { searchLaureat } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
+import ErrorBoundary from '../../components/ErrorBoundary';
 
 interface SearchPageState {
   laureates: LaureateDTO[];
@@ -23,7 +24,7 @@ class SearchPage extends React.Component<object, SearchPageState> {
     const savedQuery = localStorage.getItem('searchQuery') || '';
     this.handleSearch(savedQuery);
   }
-  
+
   handleSearch = async (query: string) => {
     this.setState({ isLoading: true });
     const data = await searchLaureat(query);
@@ -34,12 +35,14 @@ class SearchPage extends React.Component<object, SearchPageState> {
   render() {
     return (
       <div>
-        <SearchBar onSearch={this.handleSearch} />
-        {this.state.isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <SearchResultList laureates={this.state.laureates} />
-        )}
+        <ErrorBoundary>
+          <SearchBar onSearch={this.handleSearch} />
+          {this.state.isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <SearchResultList laureates={this.state.laureates} />
+          )}
+        </ErrorBoundary>
       </div>
     );
   }
