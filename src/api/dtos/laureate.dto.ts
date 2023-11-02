@@ -1,19 +1,19 @@
 export interface LaureateDTO {
   id: string;
-  knownName: IntlString;
-  givenName: IntlString;
-  familyName: IntlString;
-  fullName: IntlString;
-  fileName: string;
-  gender: string;
-  nobelPrizes: NobelPrize[];
-  birth: Birth;
+  knownName?: IntlString;
+  givenName?: IntlString;
+  familyName?: IntlString;
+  fullName?: IntlString;
+  fileName?: string;
+  gender?: string;
+  nobelPrizes?: NobelPrize[];
+  birth?: Birth;
 }
 
 interface IntlString {
-  en: string;
-  no: string;
-  se: string;
+  en?: string;
+  no?: string;
+  se?: string;
 }
 
 interface NobelPrize {

@@ -19,9 +19,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-start mb-4">
       <form
-        className="my-8 relative h-10 w-full min-w-[200px] max-w-[24rem]"
+        className="relative h-10 w-full min-w-[200px] max-w-[24rem]"
         onSubmit={handleSubmit}
       >
         <button

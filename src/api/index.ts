@@ -26,7 +26,6 @@ export const searchLaureat = async (
   });
 
   if (!response.ok) {
-    console.log('🚀 ~ file: index.ts:28 ~ response:', response);
     throw new Error('Network response was not ok'); // Consider more detailed error handling
   }
 

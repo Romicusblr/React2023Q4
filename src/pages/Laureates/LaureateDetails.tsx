@@ -1,12 +1,10 @@
 import React from 'react';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
+import { useLoaderData, LoaderFunction } from 'react-router-dom';
 
-// Define the props type using the provided DTOs
-interface LaureateCardProps {
-  laureate: LaureateDTO;
-}
+export default function LaureateDetails() {
+  const laureate = useLoaderData() as LaureateDTO;
 
-const LaureateCard: React.FC<LaureateCardProps> = ({ laureate }) => {
   return (
     <div className="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -16,15 +14,15 @@ const LaureateCard: React.FC<LaureateCardProps> = ({ laureate }) => {
         <strong>Gender:</strong> {laureate.gender}
       </p>
       <p>
-        <strong>Birth Date:</strong> {laureate.birth.date}
+        <strong>Birth Date:</strong> {laureate?.birth?.date}
       </p>
       <p>
-        <strong>Birth Place:</strong> {laureate.birth.place?.city?.en},{' '}
-        {laureate.birth.place?.country?.en}
+        <strong>Birth Place:</strong> {laureate?.birth?.place?.city?.en},{' '}
+        {laureate?.birth?.place?.country?.en}
       </p>
 
       <h3 className="mt-2 text-xl font-bold">Nobel Prizes:</h3>
-      {laureate.nobelPrizes.map((prize, index) => (
+      {laureate?.nobelPrizes?.map((prize, index) => (
         <div key={index}>
           <p>
             <strong>Award Year:</strong> {prize.awardYear}
@@ -39,6 +37,18 @@ const LaureateCard: React.FC<LaureateCardProps> = ({ laureate }) => {
       ))}
     </div>
   );
-};
+}
 
-export default LaureateCard;
+// data loader
+export const laureateDetailsLoader: LoaderFunction<LaureateDTO> = async ({
+  params,
+}) => {
+  const { id } = params;
+  const laureate: LaureateDTO = {
+    id: id ?? 'undefined',
+    knownName: { en: id + '' },
+    gender: 'gender',
+    nobelPrizes: [],
+  };
+  return laureate;
+};

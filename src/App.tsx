@@ -1,14 +1,30 @@
 import React from 'react';
-import './App.css';
-import SearchPage from './pages/SearchPage';
+import './index.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  createRoutesFromElements,
+} from 'react-router-dom';
+import Laureates, { laureatesLoader } from './pages/Laureates/Laureates';
+import LaureateDetails, {
+  laureateDetailsLoader,
+} from './pages/Laureates/LaureateDetails';
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Laureates />} loader={laureatesLoader}>
+      <Route
+        path=":id"
+        element={<LaureateDetails />}
+        loader={laureateDetailsLoader}
+      />
+    </Route>
+  )
+);
 
 const App: React.FC = () => {
-  return (
-    <>
-      <h1 className="text-3xl my-4 bold font-bold text-center">Search App</h1>
-      <SearchPage />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
