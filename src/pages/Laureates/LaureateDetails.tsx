@@ -1,6 +1,7 @@
 import React from 'react';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 import { useLoaderData, LoaderFunction } from 'react-router-dom';
+import { getLaureateDetails } from '../../api';
 
 export default function LaureateDetails() {
   const laureate = useLoaderData() as LaureateDTO;
@@ -44,11 +45,7 @@ export const laureateDetailsLoader: LoaderFunction<LaureateDTO> = async ({
   params,
 }) => {
   const { id } = params;
-  const laureate: LaureateDTO = {
-    id: id ?? 'undefined',
-    knownName: { en: id + '' },
-    gender: 'gender',
-    nobelPrizes: [],
-  };
+  const laureate = await getLaureateDetails(id);
+  console.log("🚀 ~ file: LaureateDetails.tsx:49 ~ laureate:", laureate)
   return laureate;
 };
