@@ -25,6 +25,7 @@ export default function Laureates() {
   const navigate = useNavigate();
   const location = useLocation();
   console.log("🚀 ~ file: Laureates.tsx:27 ~ Laureates ~ location:", location)
+  const search = location.search; // This holds the current search parameters like '?search=123&limit=5&offset=0'
 
   const onSearch = (query: string) => {
     // Update the URL with the new search term, limit, and offset
@@ -46,7 +47,7 @@ export default function Laureates() {
       <div className="flex flex-col flex-grow mr-4">
         <SearchBar onSearch={onSearch} />
         {laureates.map((laureate) => (
-          <LaureateItem key={laureate.id} laureate={laureate} />
+          <LaureateItem key={laureate.id} laureate={laureate} to={`${laureate.id.toString()}${search}`}/>
         ))}
       </div>
       <div className="w-1/3 h-screen flex flex-col justify-center">
