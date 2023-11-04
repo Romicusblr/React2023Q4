@@ -23,21 +23,19 @@ export default function Laureates() {
   const { laureates } = useLoaderData() as LoaderDataType;
 
   const navigate = useNavigate();
-  const location = useLocation();
-  console.log("🚀 ~ file: Laureates.tsx:27 ~ Laureates ~ location:", location)
-  const search = location.search; // This holds the current search parameters like '?search=123&limit=5&offset=0'
+  const { search } = useLocation();
 
   const onSearch = (query: string) => {
     // Update the URL with the new search term, limit, and offset
     // Retain other query parameters if needed
-    const searchParams = new URLSearchParams(location.search);
+    const searchParams = new URLSearchParams(search);
     searchParams.set('search', query);
     // searchParams.set('limit', '5'); // Set your desired limit
     // searchParams.set('offset', '0'); // Reset offset to 0 for a new search
 
     // Navigate to the updated URL, which will trigger the loader
     navigate({
-      pathname: "/",
+      pathname: '/',
       search: searchParams.toString(),
     });
   };
@@ -47,10 +45,14 @@ export default function Laureates() {
       <div className="flex flex-col flex-grow mr-4">
         <SearchBar onSearch={onSearch} />
         {laureates.map((laureate) => (
-          <LaureateItem key={laureate.id} laureate={laureate} to={`${laureate.id.toString()}${search}`}/>
+          <LaureateItem
+            key={laureate.id}
+            laureate={laureate}
+            to={`${laureate.id.toString()}${search}`}
+          />
         ))}
       </div>
-      <div className="w-1/3 h-screen flex flex-col justify-center">
+      <div className="h-screen flex flex-col justify-center">
         <Outlet />
       </div>
     </div>
