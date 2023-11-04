@@ -2,36 +2,46 @@ import {
   LoaderFunction,
   Outlet,
   useLoaderData,
-  useLocation,
   useNavigate,
+  useSearchParams,
 } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar';
 // import SearchResultList from '../../components/LaureateList';
 import { searchLaureates } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 import LaureateItem from './LaureateItem';
+import Pagination from '../../components/Pagination/Pagination';
 // import Loader from '../../components/Loader';
 
 interface LoaderDataType {
   laureates: LaureateDTO[];
-  search: string;
-  limit: string;
-  offset: string;
+  total: number;
 }
 
 export default function Laureates() {
-  const { laureates } = useLoaderData() as LoaderDataType;
+  const { laureates, total } = useLoaderData() as LoaderDataType;
 
   const navigate = useNavigate();
-  const { search } = useLocation();
+  const [searchParams] = useSearchParams();
+  const page = parseInt(searchParams.get('page') ?? '') || 0;
+  const limit = parseInt(searchParams.get('limit') ?? '') || 5;
 
   const onSearch = (query: string) => {
     // Update the URL with the new search term, limit, and offset
     // Retain other query parameters if needed
-    const searchParams = new URLSearchParams(search);
     searchParams.set('search', query);
-    // searchParams.set('limit', '5'); // Set your desired limit
-    // searchParams.set('offset', '0'); // Reset offset to 0 for a new search
+    searchParams.set('limit', limit.toString());
+    searchParams.set('page', page.toString());
+
+    // Navigate to the updated URL, which will trigger the loader
+    navigate({
+      pathname: '/',
+      search: searchParams.toString(),
+    });
+  };
+
+  const onLimitChange = (limit: string) => {
+    searchParams.set('limit', limit);
 
     // Navigate to the updated URL, which will trigger the loader
     navigate({
@@ -44,11 +54,17 @@ export default function Laureates() {
     <div className="flex flex-row justify-start p-4">
       <div className="flex flex-col flex-grow mr-4">
         <SearchBar onSearch={onSearch} />
+        <Pagination
+          onLimitChange={onLimitChange}
+          current={page + 1}
+          pageSize={limit}
+          total={total}
+        />
         {laureates.map((laureate) => (
           <LaureateItem
             key={laureate.id}
             laureate={laureate}
-            to={`${laureate.id.toString()}${search}`}
+            to={`${laureate.id.toString()}${searchParams}`}
           />
         ))}
       </div>
@@ -65,16 +81,9 @@ export const laureatesLoader: LoaderFunction = async ({ request }) => {
 
   const searchParams = url.searchParams;
 
-  const search = searchParams.get('search') ?? '';
-  const limit = searchParams.get('limit') ?? '';
-  const offset = searchParams.get('offset') ?? '';
+  const search = searchParams.get('search');
+  const limit = searchParams.get('limit');
+  const page = searchParams.get('page');
 
-  const laureates = await searchLaureates(search, { limit, offset });
-
-  return {
-    laureates,
-    search,
-    limit,
-    offset,
-  };
+  return await searchLaureates(search, { limit, page });
 };

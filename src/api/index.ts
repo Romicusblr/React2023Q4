@@ -3,26 +3,32 @@ import { LaureateDTO } from './dtos/laureate.dto';
 import { SearchLaureatesDTO } from './dtos/search-laureates.dto';
 
 interface SearchOptions {
-  limit?: string;
-  offset?: string;
+  limit: string | null;
+  page: string | null;
+}
+
+interface SearchLaureatesResponce {
+  laureates: LaureateDTO[];
+  total: number;
 }
 
 export const searchLaureates = async (
-  name?: string,
+  name: string | null,
   options?: SearchOptions
-): Promise<LaureateDTO[]> => {
+): Promise<SearchLaureatesResponce> => {
   // Destructure and set default values for options
-  let { limit, offset } = options || {};
+  const { limit, page } = options || {};
 
-  if (!limit) limit = '5';
-  if (!offset) offset = '0';
+  const pageNumber = parseInt(page ?? '') || 0;
+  const limitNumber = parseInt(limit ?? '') || 5;
   if (!name) name = '';
+  const offset = limitNumber * pageNumber;
 
   // Construct the URL with parameters
   const url = new URL(`${API_CONFIG.baseUrl}/laureates`);
   url.searchParams.append('name', name);
-  url.searchParams.append('limit', limit);
-  url.searchParams.append('offset', offset);
+  url.searchParams.append('limit', limitNumber.toString());
+  url.searchParams.append('offset', offset.toString());
 
   const response = await fetch(url.toString(), {
     method: 'GET',
@@ -34,12 +40,14 @@ export const searchLaureates = async (
   }
 
   const data: SearchLaureatesDTO = await response.json();
-  return data.laureates; // Adjust based on your API's response structure
+  console.log('🚀 ~ file: index.ts:37 ~ data:', data);
+  return {
+    laureates: data.laureates,
+    total: data.meta.count,
+  };
 };
 
-export const getLaureateDetails = async (
-  id?: string
-): Promise<LaureateDTO> => {
+export const getLaureateDetails = async (id?: string): Promise<LaureateDTO> => {
   // Construct the URL with parameters
   const url = new URL(`${API_CONFIG.baseUrl}/laureate/${id}`);
 
@@ -53,6 +61,6 @@ export const getLaureateDetails = async (
   }
 
   const data: LaureateDTO[] = await response.json();
-  console.log("🚀 ~ file: index.ts:57 ~ data:", data)
+  console.log('🚀 ~ file: index.ts:57 ~ data:', data);
   return data[0]; // Adjust based on your API's response structure
 };
