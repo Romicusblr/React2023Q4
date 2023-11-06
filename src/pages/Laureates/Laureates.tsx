@@ -44,6 +44,7 @@ export default function Laureates() {
 
   const onLimitChange = (limit: string) => {
     searchParams.set('limit', limit);
+    searchParams.set('page', '1');
 
     // Navigate to the updated URL, which will trigger the loader
     navigate({
