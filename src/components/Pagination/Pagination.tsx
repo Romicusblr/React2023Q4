@@ -20,10 +20,11 @@ const Pagination: React.FC<PaginationProps> = ({
     onLimitChange(newLimit);
   };
   const linkSearchParams = new URLSearchParams(searchParams);
-  linkSearchParams.set('page', (current - 2).toString());
+  linkSearchParams.set('page', (current - 1).toString());
   const left = linkSearchParams.toString();
-  linkSearchParams.set('page', (current).toString());
+  linkSearchParams.set('page', (current + 1).toString());
   const right = linkSearchParams.toString();
+  const totalPages = Math.ceil(total / pageSize);
   return (
     <div className="text-gray-100 text-sm sm:flex sm:flex-1 sm:items-center sm:justify-between mb-4">
       <div>
@@ -61,7 +62,10 @@ const Pagination: React.FC<PaginationProps> = ({
         >
           <Link
             to={`?${left}`}
-            className="rounded-l-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            className={
+              'rounded-l-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ' +
+              (current === 1 ? 'disabled-link' : '')
+            }
           >
             <span className="sr-only">Previous</span>
             <svg
@@ -77,14 +81,15 @@ const Pagination: React.FC<PaginationProps> = ({
               />
             </svg>
           </Link>
-          <span
-            className="relative z-10 inline-flex items-center px-4 py-2 font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
+          <span className="relative z-10 inline-flex items-center px-4 py-2 font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             {current}
           </span>
           <Link
             to={`?${right}`}
-            className="relative inline-flex items-center rounded-r-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+            className={
+              'relative inline-flex items-center rounded-r-md px-2 py-2  ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ' +
+              (current === totalPages ? 'disabled-link' : '')
+            }
           >
             <span className="sr-only">Next</span>
             <svg

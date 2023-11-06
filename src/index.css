@@ -40,3 +40,8 @@ body {
   @apply bg-gray-500 text-white hover:bg-gray-700 focus:ring-gray-500;
 }
 
+.disabled-link {
+  pointer-events: none; /* Prevents clicking */
+  color: grey; /* Grey out the link */
+  cursor: default; /* Reset cursor */
+}

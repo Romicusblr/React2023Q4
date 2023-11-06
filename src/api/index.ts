@@ -19,11 +19,15 @@ export const searchLaureates = async (
   // Destructure and set default values for options
   const { limit, page } = options || {};
 
-  const pageNumber = parseInt(page ?? '') || 0;
+  const pageNumber = parseInt(page ?? '') || 1;
   const limitNumber = parseInt(limit ?? '') || 5;
   if (!name) name = '';
-  const offset = limitNumber * pageNumber;
-
+  let offset = limitNumber * (pageNumber - 1);
+  
+  if (offset < 0) {
+    offset = 0
+  }
+  
   // Construct the URL with parameters
   const url = new URL(`${API_CONFIG.baseUrl}/laureates`);
   url.searchParams.append('name', name);

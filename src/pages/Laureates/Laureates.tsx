@@ -23,7 +23,7 @@ export default function Laureates() {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') ?? '') || 0;
+  const page = parseInt(searchParams.get('page') ?? '') || 1;
   const limit = parseInt(searchParams.get('limit') ?? '') || 5;
 
   const onSearch = (query: string) => {
@@ -56,7 +56,7 @@ export default function Laureates() {
         <SearchBar onSearch={onSearch} />
         <Pagination
           onLimitChange={onLimitChange}
-          current={page + 1}
+          current={page}
           pageSize={limit}
           total={total}
         />
@@ -84,6 +84,6 @@ export const laureatesLoader: LoaderFunction = async ({ request }) => {
   const search = searchParams.get('search');
   const limit = searchParams.get('limit');
   const page = searchParams.get('page');
-
+  await new Promise((r) => setTimeout(r, 1000));
   return await searchLaureates(search, { limit, page });
 };
