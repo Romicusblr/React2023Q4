@@ -11,6 +11,8 @@ import { searchLaureates } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 import LaureateItem from './LaureateItem';
 import Pagination from '../../components/Pagination/Pagination';
+import { Suspense } from 'react';
+import Loading from '../../components/Loader';
 // import Loader from '../../components/Loader';
 
 interface LoaderDataType {
@@ -60,13 +62,15 @@ export default function Laureates() {
           pageSize={limit}
           total={total}
         />
-        {laureates.map((laureate) => (
-          <LaureateItem
-            key={laureate.id}
-            laureate={laureate}
-            to={`${laureate.id.toString()}?${searchParams}`}
-          />
-        ))}
+        <Suspense fallback={<Loading />}>
+          {laureates.map((laureate) => (
+            <LaureateItem
+              key={laureate.id}
+              laureate={laureate}
+              to={`${laureate.id.toString()}?${searchParams}`}
+            />
+          ))}
+        </Suspense>
       </div>
       <div className="h-screen flex flex-col justify-center">
         <Outlet />
