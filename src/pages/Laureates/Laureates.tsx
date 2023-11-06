@@ -64,7 +64,7 @@ export default function Laureates() {
           <LaureateItem
             key={laureate.id}
             laureate={laureate}
-            to={`${laureate.id.toString()}${searchParams}`}
+            to={`${laureate.id.toString()}?${searchParams}`}
           />
         ))}
       </div>
@@ -84,6 +84,5 @@ export const laureatesLoader: LoaderFunction = async ({ request }) => {
   const search = searchParams.get('search');
   const limit = searchParams.get('limit');
   const page = searchParams.get('page');
-  await new Promise((r) => setTimeout(r, 1000));
   return await searchLaureates(search, { limit, page });
 };

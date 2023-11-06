@@ -4,22 +4,17 @@ import {
   useLoaderData,
   LoaderFunction,
   useNavigate,
-  useLocation,
 } from 'react-router-dom';
 import { getLaureateDetails } from '../../api';
 
 export default function LaureateDetails() {
   const laureate = useLoaderData() as LaureateDTO;
   const navigate = useNavigate();
-  const { search } = useLocation();
 
   const onClose = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (e.target instanceof HTMLElement && (e.target.id === 'modalBackground' || e.target.id === 'modalBackgroundCloseButton')) {
-      navigate({
-        pathname: '/',
-        search: search,
-      });
+      navigate(-1);
     }
   };
 
