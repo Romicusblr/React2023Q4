@@ -5,14 +5,15 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/SearchBar/SearchBar';
 // import SearchResultList from '../../components/LaureateList';
 import { searchLaureates } from '../../api';
 import { LaureateDTO } from '../../api/dtos/laureate.dto';
 import LaureateItem from './LaureateItem';
 import Pagination from '../../components/Pagination/Pagination';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Loading from '../../components/Loader';
+import { useLaureates } from '../../context/LaureateContext';
 // import Loader from '../../components/Loader';
 
 interface LoaderDataType {
@@ -21,7 +22,15 @@ interface LoaderDataType {
 }
 
 export default function Laureates() {
-  const { laureates, total } = useLoaderData() as LoaderDataType;
+  const { laureates: loadedLaureates, total: loadedTotal } = useLoaderData() as LoaderDataType;
+
+  const { laureates, total, setLaureates, setTotal } = useLaureates();
+  
+  // Synchronize context with loaded data
+  useEffect(() => {
+    setLaureates(loadedLaureates);
+    setTotal(loadedTotal);
+  }, [loadedLaureates, loadedTotal, setLaureates, setTotal]);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

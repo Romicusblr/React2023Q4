@@ -10,6 +10,7 @@ import Laureates, { laureatesLoader } from './pages/Laureates/Laureates';
 import LaureateDetails, {
   laureateDetailsLoader,
 } from './pages/Laureates/LaureateDetails';
+import { LaureateProvider } from './context/LaureateContext';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +25,11 @@ const router = createBrowserRouter(
 );
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <LaureateProvider>
+      <RouterProvider router={router} />
+    </LaureateProvider>
+  );
 };
 
 export default App;

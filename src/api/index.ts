@@ -44,7 +44,6 @@ export const searchLaureates = async (
   }
 
   const data: SearchLaureatesDTO = await response.json();
-  console.log('🚀 ~ file: index.ts:37 ~ data:', data);
   return {
     laureates: data.laureates,
     total: data.meta.count,

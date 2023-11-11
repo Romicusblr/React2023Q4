@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useLaureates as useLaureatesContext } from '../../context/LaureateContext';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const savedQuery = localStorage.getItem('searchQuery') || '';
-  const [query, setQuery] = useState<string>(savedQuery);
+  const { searchText, setSearchText } = useLaureatesContext();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(query);
-    localStorage.setItem('searchQuery', query);
+    onSearch(searchText);
+    localStorage.setItem('searchQuery', searchText);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value.trim());
+    setSearchText(e.target.value.trim());
   };
+
+  useEffect(() => {
+    const savedQuery = localStorage.getItem('searchQuery') || '';
+    setSearchText(savedQuery);
+  }, [setSearchText]);
 
   return (
     <div className=" justify-start mb-4">
@@ -27,7 +32,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         <input
           className="h-full w-full rounded border bg-transparent px-3 py-2.5 font-sans text-sm font-normal transition-all focus:border-pink-500 focus:outline-0"
           type="text"
-          value={query}
+          value={searchText}
           onChange={handleChange}
           placeholder=" "
         />
