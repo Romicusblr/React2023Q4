@@ -1,4 +1,4 @@
-import { API_CONFIG } from '../config';
+import { API_CONFIG } from '@/config';
 import { LaureateDTO } from './dtos/laureate.dto';
 import { SearchLaureatesDTO } from './dtos/search-laureates.dto';
 

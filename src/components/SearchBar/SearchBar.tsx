@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLaureates as useLaureatesContext } from '../../context/LaureateContext';
+import { useLaureates as useLaureatesContext } from '@/context/LaureateContext';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;

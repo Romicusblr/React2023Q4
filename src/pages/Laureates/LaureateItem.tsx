@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { LaureateDTO } from '../../api/dtos/laureate.dto';
+import { LaureateDTO } from '@/api/dtos/laureate.dto';
 import { Link } from 'react-router-dom';
 
 interface LaureateItemProps {

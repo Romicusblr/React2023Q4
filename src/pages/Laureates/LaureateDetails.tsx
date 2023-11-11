@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
-import { LaureateDTO } from '../../api/dtos/laureate.dto';
+import { LaureateDTO } from '@/api/dtos/laureate.dto';
 import { useLoaderData, LoaderFunction, useNavigate } from 'react-router-dom';
-import { getLaureateDetails } from '../../api';
-import Loading from '../../components/Loader';
+import { getLaureateDetails } from '@/api';
+import Loading from '@/components/Loader';
 
 export default function LaureateDetails() {
   const laureate = useLoaderData() as LaureateDTO;

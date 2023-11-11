@@ -5,16 +5,16 @@ import {
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
-import SearchBar from '../../components/SearchBar/SearchBar';
-// import SearchResultList from '../../components/LaureateList';
-import { searchLaureates } from '../../api';
-import { LaureateDTO } from '../../api/dtos/laureate.dto';
+import SearchBar from '@/components/SearchBar/SearchBar';
+// import SearchResultList from '@/components/LaureateList';
+import { searchLaureates } from '@/api';
+import { LaureateDTO } from '@/api/dtos/laureate.dto';
 import LaureateItem from './LaureateItem';
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '@/components/Pagination/Pagination';
 import { Suspense, useEffect } from 'react';
-import Loading from '../../components/Loader';
-import { useLaureates } from '../../context/LaureateContext';
-// import Loader from '../../components/Loader';
+import Loading from '@/components/Loader';
+import { useLaureates } from '@/context/LaureateContext';
+// import Loader from '@/components/Loader';
 
 interface LoaderDataType {
   laureates: LaureateDTO[];

@@ -1,5 +1,5 @@
 import { FC, createContext, useState, useContext, ReactNode } from 'react';
-import { LaureateDTO } from '../api/dtos/laureate.dto';
+import { LaureateDTO } from '@/api/dtos/laureate.dto';
 
 interface LaureateContextType {
   searchText: string;
