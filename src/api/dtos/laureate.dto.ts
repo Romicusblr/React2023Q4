@@ -18,21 +18,21 @@ interface IntlString {
 
 interface NobelPrize {
   awardYear: string;
-  category: IntlString;
-  categoryFullName: IntlString;
-  sortOrder: string;
-  portion: string;
-  dateAwarded: string;
-  prizeStatus: string;
-  motivation: IntlString;
-  prizeAmount: number;
-  prizeAmountAdjusted: number;
-  residences: [
+  category?: IntlString;
+  categoryFullName?: IntlString;
+  sortOrder?: string;
+  portion?: string;
+  dateAwarded?: string;
+  prizeStatus?: string;
+  motivation?: IntlString;
+  prizeAmount?: number;
+  prizeAmountAdjusted?: number;
+  residences?: [
     {
-      country: IntlString;
-      countryNow: IntlString;
-      continent: IntlString;
-      locationString: IntlString;
+      country?: IntlString;
+      countryNow?: IntlString;
+      continent?: IntlString;
+      locationString?: IntlString;
     },
   ];
 }
@@ -40,11 +40,11 @@ interface NobelPrize {
 interface Birth {
   date: string;
   place: {
-    city: IntlString;
-    country: IntlString;
-    cityNow: IntlString;
-    countryNow: IntlString;
-    continent: IntlString;
-    locationString: IntlString;
+    city?: IntlString;
+    country?: IntlString;
+    cityNow?: IntlString;
+    countryNow?: IntlString;
+    continent?: IntlString;
+    locationString?: IntlString;
   };
 }
