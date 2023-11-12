@@ -9,11 +9,11 @@ import SearchBar from '@/components/SearchBar/SearchBar';
 // import SearchResultList from '@/components/LaureateList';
 import { searchLaureates } from '@/api';
 import { LaureateDTO } from '@/api/dtos/laureate.dto';
-import LaureateItem from './LaureateItem';
 import Pagination from '@/components/Pagination/Pagination';
 import { Suspense, useEffect } from 'react';
 import Loading from '@/components/Loader';
 import { useLaureates } from '@/context/LaureateContext';
+import LaureatesList from './LaureatesList';
 // import Loader from '@/components/Loader';
 
 interface LoaderDataType {
@@ -22,10 +22,11 @@ interface LoaderDataType {
 }
 
 export default function Laureates() {
-  const { laureates: loadedLaureates, total: loadedTotal } = useLoaderData() as LoaderDataType;
+  const { laureates: loadedLaureates, total: loadedTotal } =
+    useLoaderData() as LoaderDataType;
 
   const { laureates, total, setLaureates, setTotal } = useLaureates();
-  
+
   // Synchronize context with loaded data
   useEffect(() => {
     setLaureates(loadedLaureates);
@@ -73,13 +74,10 @@ export default function Laureates() {
           total={total}
         />
         <Suspense fallback={<Loading />}>
-          {laureates.map((laureate) => (
-            <LaureateItem
-              key={laureate.id}
-              laureate={laureate}
-              to={`${laureate.id.toString()}?${searchParams}`}
-            />
-          ))}
+          <LaureatesList
+            laureates={laureates}
+            searchParams={searchParams.toString()}
+          ></LaureatesList>
         </Suspense>
       </div>
       <div className="h-screen flex flex-col justify-center">

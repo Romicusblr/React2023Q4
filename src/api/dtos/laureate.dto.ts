@@ -1,6 +1,6 @@
 export interface LaureateDTO {
   id: string;
-  knownName?: IntlString;
+  knownName: IntlString;
   givenName?: IntlString;
   familyName?: IntlString;
   fullName?: IntlString;
