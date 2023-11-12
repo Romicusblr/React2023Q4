@@ -4,12 +4,10 @@ import Pagination from './Pagination';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('Pagination', () => {
-  // const mockSearchParams = jest.fn();
   const mockOnLimitChange = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // mockedReactRouterDom.useSearchParams.mockImplementation(() => mockSearchParams);
   });
 
   it('renders the component correctly', () => {
