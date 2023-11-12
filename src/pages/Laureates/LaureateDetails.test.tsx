@@ -4,17 +4,15 @@ import LaureateDetails from './LaureateDetails';
 import * as reactRouterDom from 'react-router-dom';
 import { LaureateDTO } from '@/api/dtos/laureate.dto';
 
-// Create a type that describes the mocked version of reactRouterDom
 type MockedReactRouterDom = typeof reactRouterDom & {
   useNavigate: jest.Mock;
   useLoaderData: jest.Mock;
 };
 
-// Then cast reactRouterDom to the mocked version
 const mockedReactRouterDom = reactRouterDom as MockedReactRouterDom;
 
 jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'), // use actual for all non-hook parts
+  ...jest.requireActual('react-router-dom'),
   useNavigate: jest.fn(),
   useLoaderData: jest.fn(),
 }));
@@ -71,7 +69,7 @@ describe('LaureateDetails', () => {
 
   it('navigates back when modal div is clicked', () => {
     render(<LaureateDetails />);
-    const div = document.querySelector('#modalBackground'); // Using standard DOM API
+    const div = document.querySelector('#modalBackground');
     expect(div).not.toBeNull();
     fireEvent.click(div!);
     expect(mockNavigate).toHaveBeenCalledWith(-1);
