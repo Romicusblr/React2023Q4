@@ -10,8 +10,7 @@ import SearchBar from '@/components/SearchBar/SearchBar';
 import { searchLaureates } from '@/api';
 import { LaureateDTO } from '@/api/dtos/laureate.dto';
 import Pagination from '@/components/Pagination/Pagination';
-import { Suspense, useEffect } from 'react';
-import Loading from '@/components/Loader';
+import { useEffect } from 'react';
 import { useLaureates } from '@/context/LaureateContext';
 import LaureatesList from './LaureatesList';
 // import Loader from '@/components/Loader';
@@ -73,12 +72,10 @@ export default function Laureates() {
           pageSize={limit}
           total={total}
         />
-        <Suspense fallback={<Loading />}>
-          <LaureatesList
-            laureates={laureates}
-            searchParams={searchParams.toString()}
-          ></LaureatesList>
-        </Suspense>
+        <LaureatesList
+          laureates={laureates}
+          searchParams={searchParams.toString()}
+        ></LaureatesList>
       </div>
       <div className="h-screen flex flex-col justify-center">
         <Outlet />

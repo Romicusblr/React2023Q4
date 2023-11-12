@@ -10,7 +10,7 @@
     "format:fix": "prettier --write .",
     "preview": "vite preview",
     "test": "jest",
-    "test:coverage": "jest --coverage --collectCoverageFrom='./src/**/*.{ts,tsx}'"
+    "test:coverage": "jest --coverage --collectCoverageFrom='./src/**/*.tsx'"
   },
   "dependencies": {
     "react": "^18.2.0",
