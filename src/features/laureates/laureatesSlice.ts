@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface LaureateState {
+export interface LaureateState {
   searchText: string;
   perPage: number;
 }
