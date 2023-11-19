@@ -11,8 +11,9 @@ import { searchLaureates } from '@/api';
 import { LaureateDTO } from '@/api/dtos/laureate.dto';
 import Pagination from '@/components/Pagination/Pagination';
 import { useEffect } from 'react';
-import { useLaureates } from '@/context/LaureateContext';
 import LaureatesList from './LaureatesList';
+import { useAppSelector, useAppDispatch } from '@/app/hooks';
+import { setLaureates, setTotal } from '@/features/laureates/laureatesSlice';
 // import Loader from '@/components/Loader';
 
 interface LoaderDataType {
@@ -23,14 +24,15 @@ interface LoaderDataType {
 export default function Laureates() {
   const { laureates: loadedLaureates, total: loadedTotal } =
     useLoaderData() as LoaderDataType;
+  const dispatch = useAppDispatch();
 
-  const { laureates, total, setLaureates, setTotal } = useLaureates();
+  const laureates = useAppSelector((state) => state.laureate.laureates);
+  const total = useAppSelector((state) => state.laureate.total);
 
-  // Synchronize context with loaded data
   useEffect(() => {
-    setLaureates(loadedLaureates);
-    setTotal(loadedTotal);
-  }, [loadedLaureates, loadedTotal, setLaureates, setTotal]);
+    dispatch(setLaureates(loadedLaureates));
+    dispatch(setTotal(loadedTotal));
+  }, [loadedLaureates, loadedTotal, dispatch]);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

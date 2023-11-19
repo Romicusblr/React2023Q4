@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { useLaureates as useLaureatesContext } from '@/context/LaureateContext';
-
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { setSearchText } from '@/features/laureates/laureatesSlice';
 interface SearchBarProps {
   onSearch: (query: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const { searchText, setSearchText } = useLaureatesContext();
+  const dispatch = useAppDispatch();
+  const searchText = useAppSelector((state) => state.laureate.searchText);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,13 +16,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value.trim());
+    dispatch(setSearchText(e.target.value.trim()));
   };
 
   useEffect(() => {
     const savedQuery = localStorage.getItem('searchQuery') || '';
-    setSearchText(savedQuery);
-  }, [setSearchText]);
+    dispatch(setSearchText(savedQuery));
+  }, [dispatch]);
 
   return (
     <div className=" justify-start mb-4">
