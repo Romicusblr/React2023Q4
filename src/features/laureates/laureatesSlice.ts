@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LaureateDTO } from '@/api/dtos/laureate.dto';
 
 interface LaureateState {
   searchText: string;
-  laureates: LaureateDTO[];
-  total: number;
+  perPage: number;
 }
 
 const initialState: LaureateState = {
   searchText: '',
-  laureates: [],
-  total: 0,
+  perPage: 0,
 };
 
 export const laureateSlice = createSlice({
@@ -20,15 +17,12 @@ export const laureateSlice = createSlice({
     setSearchText: (state, action: PayloadAction<string>) => {
       state.searchText = action.payload;
     },
-    setLaureates: (state, action: PayloadAction<LaureateDTO[]>) => {
-      state.laureates = action.payload;
-    },
-    setTotal: (state, action: PayloadAction<number>) => {
-      state.total = action.payload;
+    setPerPage: (state, action: PayloadAction<number>) => {
+      state.perPage = action.payload;
     },
   },
 });
 
-export const { setSearchText, setLaureates, setTotal } = laureateSlice.actions;
+export const { setSearchText, setPerPage } = laureateSlice.actions;
 
 export default laureateSlice.reducer;

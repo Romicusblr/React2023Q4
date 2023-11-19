@@ -5,13 +5,19 @@ interface SearchBarProps {
   searchText: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, searchText: defaultSearchText }) => {
-  const [searchText, setSearchText] = React.useState(defaultSearchText);
+const SearchBar: React.FC<SearchBarProps> = ({
+  onSearch,
+  searchText: defaultSearchText,
+}) => {
+  const [searchText, setSearchText] = React.useState<string>(defaultSearchText);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(searchText);
-    localStorage.setItem('searchQuery', searchText);
   };
+
+  React.useEffect(() => {
+    setSearchText(defaultSearchText);
+  }, [defaultSearchText]);
 
   return (
     <div className=" justify-start mb-4">
