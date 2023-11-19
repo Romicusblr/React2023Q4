@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import laureateReducer from '@/features/laureates/laureatesSlice';
+import { laureatesApi } from '@/api/laureates';
 
 export const store = configureStore({
   reducer: {
     laureate: laureateReducer,
+    [laureatesApi.reducerPath]: laureatesApi.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(laureatesApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

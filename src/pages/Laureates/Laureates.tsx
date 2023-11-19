@@ -1,47 +1,22 @@
-import {
-  LoaderFunction,
-  Outlet,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import SearchBar from '@/components/SearchBar/SearchBar';
-// import SearchResultList from '@/components/LaureateList';
-import { searchLaureates } from '@/api';
-import { LaureateDTO } from '@/api/dtos/laureate.dto';
+import { useSearchLaureatesQuery } from '@/api/laureates';
 import Pagination from '@/components/Pagination/Pagination';
-import { useEffect } from 'react';
 import LaureatesList from './LaureatesList';
-import { useAppSelector, useAppDispatch } from '@/app/hooks';
-import { setLaureates, setTotal } from '@/features/laureates/laureatesSlice';
-// import Loader from '@/components/Loader';
-
-interface LoaderDataType {
-  laureates: LaureateDTO[];
-  total: number;
-}
+import Loading from '@/components/Loading';
 
 export default function Laureates() {
-  const { laureates: loadedLaureates, total: loadedTotal } =
-    useLoaderData() as LoaderDataType;
-  const dispatch = useAppDispatch();
-
-  const laureates = useAppSelector((state) => state.laureate.laureates);
-  const total = useAppSelector((state) => state.laureate.total);
-
-  useEffect(() => {
-    dispatch(setLaureates(loadedLaureates));
-    dispatch(setTotal(loadedTotal));
-  }, [loadedLaureates, loadedTotal, dispatch]);
-
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const name = searchParams.get('name') ?? '';
   const page = parseInt(searchParams.get('page') ?? '') || 1;
   const limit = parseInt(searchParams.get('limit') ?? '') || 5;
 
+  const req = { name, page, limit };
+  const res = useSearchLaureatesQuery(req);
+  console.log("🚀 ~ file: Laureates.tsx:17 ~ Laureates ~ res:", res)
+  const { data, error, isFetching, isSuccess, isError } = res;
   const onSearch = (query: string) => {
-    // Update the URL with the new search term, limit, and offset
-    // Retain other query parameters if needed
     searchParams.set('search', query);
     searchParams.set('limit', limit.toString());
     searchParams.set('page', page.toString());
@@ -64,10 +39,14 @@ export default function Laureates() {
     });
   };
 
-  return (
-    <div className="flex flex-row justify-start p-4">
-      <div className="flex flex-col flex-grow mr-4">
-        <SearchBar onSearch={onSearch} />
+  let content;
+
+  if (isFetching) {
+    content = <Loading />;
+  } else if (isSuccess) {
+    const { total, laureates } = data;
+    content = (
+      <>
         <Pagination
           onLimitChange={onLimitChange}
           current={page}
@@ -78,6 +57,17 @@ export default function Laureates() {
           laureates={laureates}
           searchParams={searchParams.toString()}
         ></LaureatesList>
+      </>
+    );
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
+
+  return (
+    <div className="flex flex-row justify-start p-4">
+      <div className="flex flex-col flex-grow mr-4">
+        <SearchBar onSearch={onSearch} />
+        {content}
       </div>
       <div className="h-screen flex flex-col justify-center">
         <Outlet />
@@ -85,15 +75,3 @@ export default function Laureates() {
     </div>
   );
 }
-
-// data loader
-export const laureatesLoader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url);
-
-  const searchParams = url.searchParams;
-
-  const search = searchParams.get('search');
-  const limit = searchParams.get('limit');
-  const page = searchParams.get('page');
-  return await searchLaureates(search, { limit, page });
-};

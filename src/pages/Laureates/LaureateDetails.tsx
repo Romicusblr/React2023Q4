@@ -1,12 +1,15 @@
 import React from 'react';
-import { LaureateDTO } from '@/api/dtos/laureate.dto';
-import { useLoaderData, LoaderFunction, useNavigate } from 'react-router-dom';
-import { getLaureateDetails } from '@/api';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetLaureateDetailsQuery } from '@/api/laureates';
+import Loading from '@/components/Loading';
 
 export default function LaureateDetails() {
-  const laureate = useLoaderData() as LaureateDTO;
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  const res = useGetLaureateDetailsQuery(id as string);
+
+  const { data, error, isLoading, isSuccess, isError } = res;
   const onClose = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (
@@ -18,13 +21,13 @@ export default function LaureateDetails() {
     }
   };
 
-  return (
-    <div
-      id="modalBackground"
-      className="flex justify-end z-1 fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full"
-      onClick={onClose}
-    >
-      <div className="w-1/3 block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+  let content;
+  if (isLoading) {
+    content = <Loading />;
+  } else if (isSuccess) {
+    const laureate = data;
+    content = (
+      <>
         <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {laureate.knownName?.en}
         </h2>
@@ -56,16 +59,30 @@ export default function LaureateDetails() {
         <button id="modalBackgroundCloseButton" className="mt-2 btn btn-submit">
           Close
         </button>
+      </>
+    );
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
+
+  return (
+    <div
+      id="modalBackground"
+      className="flex justify-end z-1 fixed inset-0 bg-gray-900 bg-opacity-75 overflow-y-auto h-full w-full"
+      onClick={onClose}
+    >
+      <div className="w-1/3 block p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        {content}
       </div>
     </div>
   );
 }
 
 // data loader
-export const laureateDetailsLoader: LoaderFunction<LaureateDTO> = async ({
-  params,
-}) => {
-  const { id } = params;
-  const laureate = await getLaureateDetails(id);
-  return laureate;
-};
+// export const laureateDetailsLoader: LoaderFunction<LaureateDTO> = async ({
+//   params,
+// }) => {
+//   const { id } = params;
+//   const laureate = await getLaureateDetails(id);
+//   return laureate;
+// };

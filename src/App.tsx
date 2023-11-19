@@ -6,19 +6,13 @@ import {
   Route,
   createRoutesFromElements,
 } from 'react-router-dom';
-import Laureates, { laureatesLoader } from './pages/Laureates/Laureates';
-import LaureateDetails, {
-  laureateDetailsLoader,
-} from './pages/Laureates/LaureateDetails';
+import Laureates from './pages/Laureates/Laureates';
+import LaureateDetails from './pages/Laureates/LaureateDetails';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Laureates />} loader={laureatesLoader}>
-      <Route
-        path=":id"
-        element={<LaureateDetails />}
-        loader={laureateDetailsLoader}
-      />
+    <Route path="/" element={<Laureates />}>
+      <Route path=":id" element={<LaureateDetails />} />
     </Route>
   )
 );
