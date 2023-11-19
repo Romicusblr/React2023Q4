@@ -18,6 +18,8 @@ describe('Pagination', () => {
           total={100}
           current={1}
           pageSize={10}
+          left=''
+          right=''
         />
       </MemoryRouter>
     );
@@ -33,6 +35,8 @@ describe('Pagination', () => {
           total={100}
           current={1}
           pageSize={10}
+          left=''
+          right=''
         />
       </MemoryRouter>
     );
@@ -49,6 +53,8 @@ describe('Pagination', () => {
           total={100}
           current={1}
           pageSize={10}
+          left=''
+          right=''
         />
       </MemoryRouter>
     );
@@ -63,6 +69,8 @@ describe('Pagination', () => {
           total={100}
           current={10}
           pageSize={10}
+          left=''
+          right=''
         />
       </MemoryRouter>
     );
@@ -77,23 +85,12 @@ describe('Pagination', () => {
           total={100}
           current={5}
           pageSize={10}
+          left=''
+          right=''
         />
       </MemoryRouter>
     );
     expect(screen.getByText('Previous').parentNode).not.toHaveClass('disabled-link');
     expect(screen.getByText('Next').parentNode).not.toHaveClass('disabled-link');
-  });
-
-  it('change searchParams on arrow click', () => {
-    render(
-      <MemoryRouter>
-        <Pagination
-          onLimitChange={mockOnLimitChange}
-          total={100}
-          current={5}
-          pageSize={10}
-        />
-      </MemoryRouter>
-    );
   });
 });

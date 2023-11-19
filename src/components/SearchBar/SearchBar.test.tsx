@@ -1,51 +1,40 @@
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import SearchBar from './SearchBar';
-import { LaureateProvider } from '@/context/LaureateContext';
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import SearchBar from './SearchBar'; // Adjust the import path as needed
 
-const mockOnSearch = jest.fn();
-const mockSetItem = jest.fn();
-const mockGetItem = jest.fn();
+describe('SearchBar Component', () => {
+  const mockOnSearch = jest.fn();
 
-describe('SearchBar component', () => {
-  beforeEach(() => {
-    Storage.prototype.setItem = mockSetItem;
-    Storage.prototype.getItem = mockGetItem;
+  it('renders with initial searchText', () => {
+    render(<SearchBar onSearch={mockOnSearch} searchText="initial" />);
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.value).toBe('initial');
   });
 
-  afterEach(() => {
-    cleanup();
-    jest.restoreAllMocks();
+  it('updates input value on user typing', () => {
+    render(<SearchBar onSearch={mockOnSearch} searchText="" />);
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: 'hello' } });
+    expect(input.value).toBe('hello');
   });
 
-  it('saves search query to local storage on submit', () => {
-    const screen = render(
-      <LaureateProvider>
-        <SearchBar onSearch={mockOnSearch} />
-      </LaureateProvider>
-    );
+  it('calls onSearch when form is submitted', () => {
+    render(<SearchBar onSearch={mockOnSearch} searchText="" />);
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: 'Submit' });
 
-    const input = screen.getByRole('textbox');
-    const submitButton = screen.getByRole('button', { name: 'Submit' });
+    fireEvent.change(input, { target: { value: 'test query' } });
+    fireEvent.click(button);
 
-    // Simulate user typing and submitting
-    fireEvent.change(input, { target: { value: 'Nobel' } });
-    fireEvent.click(submitButton);
-
-    // Assert local storage usage
-    expect(mockSetItem).toHaveBeenCalledWith('searchQuery', 'Nobel');
+    expect(mockOnSearch).toHaveBeenCalledWith('test query');
   });
 
-  it('reads search query from local storage on mount', () => {
-    // Mock the return value of getItem
-    mockGetItem.mockReturnValue('Einstein');
-    const { getByDisplayValue } = render(
-      <LaureateProvider>
-        <SearchBar onSearch={mockOnSearch} />
-      </LaureateProvider>
-    );
+  it('updates input value when defaultSearchText prop changes', () => {
+    const { rerender } = render(<SearchBar onSearch={mockOnSearch} searchText="initial" />);
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.value).toBe('initial');
 
-    // Assert that the input value is set from local storage
-    expect(getByDisplayValue('Einstein')).toBeInTheDocument();
+    rerender(<SearchBar onSearch={mockOnSearch} searchText="updated" />);
+    expect(input.value).toBe('updated');
   });
 });
