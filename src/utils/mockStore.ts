@@ -1,15 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
-import laureateReducer, {
-  LaureateState,
-} from '@/features/laureates/laureatesSlice';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { laureatesApi } from '@/api/laureates';
 
-export const createMockStore = (initialState: LaureateState) => {
-  return configureStore({
-    reducer: {
-      laureate: laureateReducer,
-    },
-    preloadedState: {
-      laureate: initialState,
-    },
-  });
-};
+const middlewares = [thunk, laureatesApi.middleware];
+const mockStore = configureMockStore(middlewares);
+
+export default mockStore;

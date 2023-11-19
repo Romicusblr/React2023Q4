@@ -1,65 +1,82 @@
+import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import Laureates from './Laureates';
-import * as reactRouterDom from 'react-router-dom';
-import { LaureateDTO } from '@/api/dtos/laureate.dto';
-import { useLaureates } from '@/context/LaureateContext';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
+import Laureates from './Laureates';
+import mockStore from '@/utils/mockStore';
+import { laureatesApi, useSearchLaureatesQuery } from '@/api/laureates'; // Adjust this import based on your actual API file structure
+import { DEFAULT_LIMIT } from '@/config';
+import { useLocalStorage } from '@/app/hooks/useLocalStorage';
 
-type MockedReactRouterDom = typeof reactRouterDom & {
-  useNavigate: jest.Mock;
-  useLoaderData: jest.Mock;
-  useSearchParams: jest.Mock;
-};
-type mockedUseLaureates = jest.Mock;
-
-const mockedReactRouterDom = reactRouterDom as MockedReactRouterDom;
-const mockedUseLaureates = useLaureates as mockedUseLaureates;
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
-  useLoaderData: jest.fn(),
-  useSearchParams: jest.fn(),
+jest.mock('@/api/laureates', () => ({
+  ...jest.requireActual('@/api/laureates'),
+  useSearchLaureatesQuery: jest.fn(),
 }));
 
-jest.mock('@/context/LaureateContext', () => ({
-  useLaureates: jest.fn(),
-}));
+jest.mock('@/app/hooks/useLocalStorage');
 
-jest.mock('@/api', () => ({
-  searchLaureates: jest.fn(),
-}));
+const store = mockStore({
+  laureate: {
+    searchText: '',
+    perPage: DEFAULT_LIMIT,
+    // other necessary initial state values
+  },
+  [laureatesApi.reducerPath]: laureatesApi.middleware,
+  // any other slices or initial state
+});
 
-describe('Laureates Component Tests', () => {
-  const mockLaureates: LaureateDTO[] = [
-    { id: '1', knownName: { en: 'Marie Curie' } },
-    { id: '2', knownName: { en: 'Albert Einstein' } },
-  ];
+describe('<Laureates />', () => {
+  const useSearchLaureatesQueryMock = jest.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockedUseLaureates.mockReturnValue({
-      laureates: mockLaureates,
-      setLaureates: jest.fn(),
-      total: 2,
-      setTotal: jest.fn(),
-      searchText: '',
-      setSearchText: jest.fn(),
-    });
-    mockedReactRouterDom.useLoaderData.mockReturnValue({
-      laureates: mockLaureates,
-      total: 2,
-    });
-    mockedReactRouterDom.useSearchParams.mockReturnValue([
-      { get: jest.fn(), set: jest.fn() },
+    (useSearchLaureatesQuery as jest.Mock).mockImplementation(
+      () => useSearchLaureatesQueryMock
+    );
+    (useLocalStorage as jest.Mock).mockImplementation(() => [
+      'test',
       jest.fn(),
     ]);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // Example test: Component renders successfully
   it('renders without crashing', () => {
+    const mockData = {
+      laureates: [
+        {
+          knownName: { en: 'John Doe' },
+          gender: 'Male',
+          birth: {
+            date: '1990-01-01',
+            place: { city: { en: 'City' }, country: { en: 'Country' } },
+          },
+          nobelPrizes: [
+            {
+              awardYear: '2020',
+              category: { en: 'Peace' },
+              motivation: { en: 'For peace' },
+            },
+          ],
+        },
+      ],
+      total: 10,
+    };
+
+    useSearchLaureatesQueryMock.mockReturnValue({
+      data: mockData, // Replace with your mock data
+      error: null,
+      isLoading: false,
+      isSuccess: true,
+    });
+
     render(
       <MemoryRouter>
-        <Laureates />
+        <Provider store={store}>
+          <Laureates />
+        </Provider>
       </MemoryRouter>
     );
   });
