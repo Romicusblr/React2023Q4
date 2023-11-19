@@ -77,12 +77,3 @@ export default function LaureateDetails() {
     </div>
   );
 }
-
-// data loader
-// export const laureateDetailsLoader: LoaderFunction<LaureateDTO> = async ({
-//   params,
-// }) => {
-//   const { id } = params;
-//   const laureate = await getLaureateDetails(id);
-//   return laureate;
-// };
