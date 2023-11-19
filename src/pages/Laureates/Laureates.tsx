@@ -4,18 +4,19 @@ import { useSearchLaureatesQuery } from '@/api/laureates';
 import Pagination from '@/components/Pagination/Pagination';
 import LaureatesList from './LaureatesList';
 import Loading from '@/components/Loading';
+import {DEFAULT_LIMIT, DEFAULT_PAGE} from "@/config";
 
 export default function Laureates() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const name = searchParams.get('name') ?? '';
-  const page = parseInt(searchParams.get('page') ?? '') || 1;
-  const limit = parseInt(searchParams.get('limit') ?? '') || 5;
+  const name = searchParams.get('search') ?? '';
+  const page = parseInt(searchParams.get('page') ?? '') || DEFAULT_PAGE;
+  const limit = parseInt(searchParams.get('limit') ?? '') || DEFAULT_LIMIT;
 
   const req = { name, page, limit };
   const res = useSearchLaureatesQuery(req);
-  console.log("🚀 ~ file: Laureates.tsx:17 ~ Laureates ~ res:", res)
   const { data, error, isFetching, isSuccess, isError } = res;
+
   const onSearch = (query: string) => {
     searchParams.set('search', query);
     searchParams.set('limit', limit.toString());
@@ -23,7 +24,6 @@ export default function Laureates() {
 
     // Navigate to the updated URL, which will trigger the loader
     navigate({
-      pathname: '/',
       search: searchParams.toString(),
     });
   };
@@ -34,7 +34,6 @@ export default function Laureates() {
 
     // Navigate to the updated URL, which will trigger the loader
     navigate({
-      pathname: '/',
       search: searchParams.toString(),
     });
   };
@@ -45,6 +44,14 @@ export default function Laureates() {
     content = <Loading />;
   } else if (isSuccess) {
     const { total, laureates } = data;
+    const left = new URLSearchParams({
+      ...searchParams,
+      page: (page - 1).toString(),
+    }).toString();
+    const right = new URLSearchParams({
+      ...searchParams,
+      page: (page + 1).toString(),
+    }).toString();
     content = (
       <>
         <Pagination
@@ -52,6 +59,8 @@ export default function Laureates() {
           current={page}
           pageSize={limit}
           total={total}
+          left={left}
+          right={right}
         />
         <LaureatesList
           laureates={laureates}
