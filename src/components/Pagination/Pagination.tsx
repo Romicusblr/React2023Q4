@@ -17,7 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({
   current,
   pageSize,
   left,
-  right
+  right,
 }) => {
 
   const totalPages = Math.ceil(total / pageSize);

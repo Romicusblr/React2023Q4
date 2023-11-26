@@ -8,12 +8,12 @@ import { DEFAULT_LIMIT, DEFAULT_PAGE } from '@/config';
 import { useAppDispatch, useAppSelector } from '@/app/store';
 import { setPerPage, setSearchText } from '@/app/laureatesSlice';
 import { encode } from 'querystring';
+import { useEffect } from 'react';
 
 export default function Laureates() {
   const router = useRouter();
   const { query } = router;
   const searchParams = new URLSearchParams(encode(query));
-  console.log("🚀 ~ file: Laureates.tsx:16 ~ Laureates ~ searchParams:", searchParams)
   const dispatch = useAppDispatch();
 
   const searchText = useAppSelector((state) => state.laureate.searchText);
@@ -26,13 +26,17 @@ export default function Laureates() {
   const res = useSearchLaureatesQuery(req);
   const { data, error, isFetching, isSuccess, isError } = res;
 
+  useEffect(() => {
+    dispatch(setPerPage(DEFAULT_LIMIT));
+  }, [dispatch]);
+
   const onSearch = (search: string) => {
     searchParams.set('search', search);
     searchParams.set('limit', limit.toString());
     searchParams.set('page', page.toString());
     dispatch(setSearchText(search));
     // Navigate to the updated URL, which will trigger the loader
-    router.push("?" + searchParams.toString());
+    router.push('?' + searchParams.toString());
   };
 
   const onLimitChange = (limit: string) => {
@@ -41,7 +45,7 @@ export default function Laureates() {
     dispatch(setPerPage(+limit));
 
     // Navigate to the updated URL, which will trigger the loader
-    router.push("?" + searchParams.toString());
+    router.push('?' + searchParams.toString());
   };
 
   const createPageUrl = (searchParams: URLSearchParams, page: number) => {
