@@ -1,4 +1,4 @@
-import { Footer } from "@/components/Footer";
+import { Footer } from '@/components/Footer';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -10,5 +10,5 @@ export default function Layout({ children }: LayoutProps) {
       <main>{children}</main>
       <Footer />
     </>
-  )
+  );
 }

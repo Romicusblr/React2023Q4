@@ -57,5 +57,11 @@ export const laureatesApi = createApi({
   }),
 });
 
-export const { useSearchLaureatesQuery, useGetLaureateDetailsQuery } =
-  laureatesApi;
+export const {
+  useSearchLaureatesQuery,
+  useGetLaureateDetailsQuery,
+  util: { getRunningQueriesThunk },
+} = laureatesApi;
+
+// export endpoints for use in SSR
+export const { searchLaureates, getLaureateDetails } = laureatesApi.endpoints;

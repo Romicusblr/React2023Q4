@@ -15,7 +15,7 @@ const LaureatesList: FC<LaureatesListProps> = ({ laureates, searchParams }) => {
           <LaureateItem
             key={laureate.id}
             laureate={laureate}
-            to={`${laureate.id}?${searchParams}`}
+            to={`laureate/${laureate.id}?${searchParams}`}
           />
         ))
       ) : (

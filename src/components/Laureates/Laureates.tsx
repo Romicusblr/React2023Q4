@@ -13,6 +13,7 @@ export default function Laureates() {
   const router = useRouter();
   const { query } = router;
   const searchParams = new URLSearchParams(encode(query));
+  console.log("🚀 ~ file: Laureates.tsx:16 ~ Laureates ~ searchParams:", searchParams)
   const dispatch = useAppDispatch();
 
   const searchText = useAppSelector((state) => state.laureate.searchText);
@@ -25,27 +26,22 @@ export default function Laureates() {
   const res = useSearchLaureatesQuery(req);
   const { data, error, isFetching, isSuccess, isError } = res;
 
-  // useEffect(() => {
-  //   dispatch(setSearchText(searchTextLS));
-  //   dispatch(setPerPage(DEFAULT_LIMIT));
-  // }, [searchTextLS, dispatch]);
-
   const onSearch = (search: string) => {
-    query.search = search;
-    query.limit = limit.toString();
-    query.page = page.toString();
+    searchParams.set('search', search);
+    searchParams.set('limit', limit.toString());
+    searchParams.set('page', page.toString());
     dispatch(setSearchText(search));
     // Navigate to the updated URL, which will trigger the loader
-    router.push(query);
+    router.push("?" + searchParams.toString());
   };
 
   const onLimitChange = (limit: string) => {
-    query.limit = limit;
-    query.page = '1';
+    searchParams.set('limit', limit);
+    searchParams.set('page', '1');
     dispatch(setPerPage(+limit));
 
     // Navigate to the updated URL, which will trigger the loader
-    router.push(query);
+    router.push("?" + searchParams.toString());
   };
 
   const createPageUrl = (searchParams: URLSearchParams, page: number) => {
@@ -74,7 +70,7 @@ export default function Laureates() {
         />
         <LaureatesList
           laureates={laureates}
-          searchParams={query.toString()}
+          searchParams={searchParams.toString()}
         ></LaureatesList>
       </>
     );
@@ -88,7 +84,6 @@ export default function Laureates() {
         <SearchBar onSearch={onSearch} searchText={searchText} />
         {content}
       </div>
-      <div className="h-screen flex flex-col justify-center"></div>
     </div>
   );
 }
