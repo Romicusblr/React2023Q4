@@ -1,37 +1,115 @@
 "use client";
 import { InputRadio, InputText } from "@/components/Input";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-type FormData = {
-  email: string;
-  password: string;
-};
+import { yupResolver } from "@hookform/resolvers/yup";
+import { User, userSchema } from "@/lib/dtos/User";
+import { setControlledUser } from "@/lib/userSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const ControlledFormPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const userBefore = useAppSelector((state) => state.user.controlled);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+    reset,
+  } = useForm<User>({
+    resolver: yupResolver(userSchema),
+  });
+  console.log("🚀 ~ file: page.tsx:18 ~ errors:", errors);
+  const onSubmit: SubmitHandler<User> = (data) => {
+    console.log("🚀 ~ file: page.tsx:22 ~ data:", data);
+    dispatch(setControlledUser(data));
+  };
+
+  const ErrorText: React.FC<{ prop: keyof User }> = ({ prop }) => {
+    return <span className="align-top text-xs text-red-500 ml-1">{errors[prop]?.message}</span>;
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto my-4">
-      <InputText name="name" placeholder="John Doe" />
-      <InputText name="age" placeholder="age" required />
-      <InputText name="email" type="email" placeholder="email@example.com" required />
-      <InputText name="password" type="password" placeholder="password" required />
-      <InputText
-        name="password_repeat"
-        type="password"
-        label="Repeat password"
-        placeholder="repeat password"
-        required
-      />
-      <InputRadio name="gender" values={["Male", "Female"]} />
-      <InputText name="acceptTOC" type="checkbox" label="Accept T&C" required />
-      <InputText name="picture" />
-      <InputText name="country" />
+      <div className="mb-5">
+        <label htmlFor="name" className=" block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Your name
+          <ErrorText prop="name" />
+        </label>
+        <input {...register("name")} type="text" className="input-text" />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="age" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Your age
+          <ErrorText prop="age" />
+        </label>
+        <input {...register("age")} type="text" className="input-text" />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Your email
+          <ErrorText prop="email" />
+        </label>
+        <input {...register("email")} type="email" className="input-text" />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Your password
+          <ErrorText prop="password" />
+        </label>
+        <input {...register("password")} type="password" className="input-text" />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="password_repeat" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Repeat password
+          <ErrorText prop="password_repeat" />
+        </label>
+        <input {...register("password_repeat")} type="password" className="input-text" />
+      </div>
+      <div className="mb-5">
+        <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your gender</h3>
+        <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+            <div className="flex items-center ps-3">
+              <input
+                type="radio"
+                value="Male"
+                {...register("gender")}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+              />
+              <label
+                htmlFor="horizontal-list-radio-license"
+                className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Male
+              </label>
+            </div>
+          </li>
+          <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+            <div className="flex items-center ps-3">
+              <input
+                type="radio"
+                value="Female"
+                {...register("gender")}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+              />
+              <label
+                htmlFor="horizontal-list-radio-license"
+                className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Female
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div className="mb-5">
+        <label htmlFor="acceptTOC" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Accept T&C
+        </label>
+        <input {...register("acceptTOC")} type="checkbox" className="input-text" />
+      </div>
+      {/* <InputText name="picture" defaultValue={userBefore.picture} />
+      <InputText name="country" defaultValue={userBefore.country} /> */}
 
       <button type="submit" className="submit-button">
         Submit
