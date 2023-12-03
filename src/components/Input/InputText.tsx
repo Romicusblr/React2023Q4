@@ -10,7 +10,7 @@ const InputText: React.FC<InputTextProps> = ({ name, type = "text", label=`Your 
       <label htmlFor={name} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
         {label}
       </label>
-      <input type={type} id={name} className="input-text" {...rest} />
+      <input type={type} name={name} className="input-text" {...rest} />
     </div>
   );
 };

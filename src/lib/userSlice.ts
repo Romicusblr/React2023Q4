@@ -1,15 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface User {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  gender: string;
-  acceptTOC: boolean;
-  picture: string;
-  country: string;
-}
+import { User } from "./dtos/User";
 
 export interface UserState {
   controlled: Partial<User>;
@@ -25,12 +15,15 @@ export const laureateSlice = createSlice({
   name: "laureate",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
+    setControlledUser: (state, action: PayloadAction<User>) => {
       state.controlled = action.payload;
+    },
+    setUncontrolledUser: (state, action: PayloadAction<User>) => {
+      state.uncontrolled = action.payload;
     },
   },
 });
 
-export const { setUser } = laureateSlice.actions;
+export const { setControlledUser, setUncontrolledUser } = laureateSlice.actions;
 
 export default laureateSlice.reducer;

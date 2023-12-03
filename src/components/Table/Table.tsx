@@ -1,5 +1,5 @@
+import { User } from "@/lib/dtos/User";
 import { useAppStore } from "@/lib/hooks";
-import { User } from "@/lib/userSlice";
 
 type TableProps = {
   user1: Partial<User>;
@@ -14,17 +14,15 @@ type TableRowProps = {
 
 const TableRow: React.FC<TableRowProps> = ({ field, user1, user2 }) => {
   return (
-    <tr className="border-b dark:border-neutral-500">
+    <tr key={field} className="border-b dark:border-neutral-500">
       <td className="whitespace-nowrap px-6 py-4">{field}</td>
-      <td className="whitespace-nowrap px-6 py-4">{user1[field]}</td>
-      <td className="whitespace-nowrap px-6 py-4">{user2[field]}</td>
+      <td className="whitespace-nowrap px-6 py-4">{user1[field]?.toString()}</td>
+      <td className="whitespace-nowrap px-6 py-4">{user2[field]?.toString()}</td>
     </tr>
   );
 };
 
 const Table: React.FC<TableProps> = ({ user1, user2 }) => {
-  const store = useAppStore();
-  console.log("🚀 ~ file: page.tsx:7 ~ store:", store);
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
