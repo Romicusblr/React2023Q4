@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "./dtos/User";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from './dtos/User';
 
 export interface UserState {
   controlled: Partial<User>;
@@ -12,7 +12,7 @@ const initialState: UserState = {
 };
 
 export const laureateSlice = createSlice({
-  name: "laureate",
+  name: 'laureate',
   initialState,
   reducers: {
     setControlledUser: (state, action: PayloadAction<User>) => {

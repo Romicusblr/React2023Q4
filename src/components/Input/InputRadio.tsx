@@ -10,7 +10,11 @@ type InputRadioValueProps = React.InputHTMLAttributes<HTMLInputElement> & {
   value: string;
 };
 
-const RadioValue: React.FC<InputRadioValueProps> = ({ name, value, ...rest }) => {
+const RadioValue: React.FC<InputRadioValueProps> = ({
+  name,
+  value,
+  ...rest
+}) => {
   return (
     <div className="flex items-center ps-3">
       <input
@@ -30,15 +34,29 @@ const RadioValue: React.FC<InputRadioValueProps> = ({ name, value, ...rest }) =>
   );
 };
 
-const InputRadio: React.FC<InputRadioProps> = ({ name, values, defaultValue, label = `Your ${name}` }) => {
+const InputRadio: React.FC<InputRadioProps> = ({
+  name,
+  values,
+  defaultValue,
+  label = `Your ${name}`,
+}) => {
   return (
     <div className="mb-5">
-      <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{label}</h3>
+      <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        {label}
+      </h3>
       <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
         {values?.map((v, i) => {
           return (
-            <li key={i} className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-              <RadioValue name={name} value={v} defaultChecked={v === defaultValue} />
+            <li
+              key={i}
+              className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <RadioValue
+                name={name}
+                value={v}
+                defaultChecked={v === defaultValue}
+              />
             </li>
           );
         })}

@@ -1,5 +1,5 @@
-import { User } from "@/lib/dtos/User";
-import { useAppStore } from "@/lib/hooks";
+import { User } from '@/lib/dtos/User';
+import { useAppStore } from '@/lib/hooks';
 
 type TableProps = {
   user1: Partial<User>;
@@ -16,8 +16,12 @@ const TableRow: React.FC<TableRowProps> = ({ field, user1, user2 }) => {
   return (
     <tr key={field} className="border-b dark:border-neutral-500">
       <td className="whitespace-nowrap px-6 py-4">{field}</td>
-      <td className="whitespace-nowrap px-6 py-4">{user1[field]?.toString()}</td>
-      <td className="whitespace-nowrap px-6 py-4">{user2[field]?.toString()}</td>
+      <td className="whitespace-nowrap px-6 py-4">
+        {user1[field]?.toString()}
+      </td>
+      <td className="whitespace-nowrap px-6 py-4">
+        {user2[field]?.toString()}
+      </td>
     </tr>
   );
 };

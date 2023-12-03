@@ -1,11 +1,11 @@
-"use client";
-import { InputRadio, InputText } from "@/components/Input";
-import { FormEvent } from "react";
-import { setUncontrolledUser } from "@/lib/userSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { userSchema } from "@/lib/dtos/User";
-import { ValidationError } from "yup";
-import { useRouter } from "next/navigation";
+'use client';
+import { InputRadio, InputText } from '@/components/Input';
+import { FormEvent } from 'react';
+import { setUncontrolledUser } from '@/lib/userSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { userSchema } from '@/lib/dtos/User';
+import { ValidationError } from 'yup';
+import { useRouter } from 'next/navigation';
 
 const UncontrolledFormPage: React.FC = () => {
   const router = useRouter();
@@ -32,13 +32,36 @@ const UncontrolledFormPage: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-sm mx-auto my-4">
-      <InputText name="name" placeholder="John Doe" defaultValue={userBefore.name} />
+      <InputText
+        name="name"
+        placeholder="John Doe"
+        defaultValue={userBefore.name}
+      />
       <InputText name="age" placeholder="age" defaultValue={userBefore.age} />
-      <InputText name="email" type="email" placeholder="email@example.com" defaultValue={userBefore.email} />
+      <InputText
+        name="email"
+        type="email"
+        placeholder="email@example.com"
+        defaultValue={userBefore.email}
+      />
       <InputText name="password" type="password" placeholder="password" />
-      <InputText name="password_repeat" type="password" label="Repeat password" placeholder="repeat password" />
-      <InputRadio name="gender" values={["Male", "Female"]} defaultValue={userBefore.gender} />
-      <InputText name="acceptTOC" type="checkbox" label="Accept T&C" defaultChecked={userBefore.acceptTOC} />
+      <InputText
+        name="password_repeat"
+        type="password"
+        label="Repeat password"
+        placeholder="repeat password"
+      />
+      <InputRadio
+        name="gender"
+        values={['Male', 'Female']}
+        defaultValue={userBefore.gender}
+      />
+      <InputText
+        name="acceptTOC"
+        type="checkbox"
+        label="Accept T&C"
+        defaultChecked={userBefore.acceptTOC}
+      />
       {/* <InputText name="picture" defaultValue={userBefore.picture} /> */}
       {/* <InputText name="country" defaultValue={userBefore.country} /> */}
 

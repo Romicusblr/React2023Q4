@@ -1,6 +1,6 @@
-"use client";
-import { Table } from "@/components/Table";
-import { useAppSelector } from "@/lib/hooks";
+'use client';
+import { Table } from '@/components/Table';
+import { useAppSelector } from '@/lib/hooks';
 
 const MainPage: React.FC = () => {
   const user1 = useAppSelector((state) => state.user.controlled);
