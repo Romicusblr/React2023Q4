@@ -5,11 +5,12 @@ import { setUncontrolledUser } from "@/lib/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { userSchema } from "@/lib/dtos/User";
 import { ValidationError } from "yup";
+import { useRouter } from "next/navigation";
 
 const UncontrolledFormPage: React.FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const userBefore = useAppSelector((state) => state.user.uncontrolled);
-  console.log("🚀 ~ file: page.tsx:12 ~ userBefore:", userBefore);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,9 +18,8 @@ const UncontrolledFormPage: React.FC = () => {
     const data = Object.fromEntries(formData.entries());
     try {
       const user = await userSchema.validate(data);
-      console.log("data", data); // Process the form data
-      console.log("user", user); // Process the form data
       dispatch(setUncontrolledUser(user));
+      router.push('/');
     } catch (err) {
       if (err instanceof ValidationError) {
         console.log(err.name);
@@ -39,8 +39,8 @@ const UncontrolledFormPage: React.FC = () => {
       <InputText name="password_repeat" type="password" label="Repeat password" placeholder="repeat password" />
       <InputRadio name="gender" values={["Male", "Female"]} defaultValue={userBefore.gender} />
       <InputText name="acceptTOC" type="checkbox" label="Accept T&C" defaultChecked={userBefore.acceptTOC} />
-      <InputText name="picture" defaultValue={userBefore.picture} />
-      <InputText name="country" defaultValue={userBefore.country} />
+      {/* <InputText name="picture" defaultValue={userBefore.picture} /> */}
+      {/* <InputText name="country" defaultValue={userBefore.country} /> */}
 
       <button type="submit" className="submit-button">
         Submit

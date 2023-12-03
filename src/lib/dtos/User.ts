@@ -1,4 +1,4 @@
-import { boolean, object, string, number, InferType, ref, mixed } from "yup";
+import { boolean, object, string, number, InferType } from "yup";
 
 export const userSchema = object({
   name: string().required(),
@@ -8,11 +8,12 @@ export const userSchema = object({
   password_repeat: string().test("passwords-match", "Passwords must match", function (value) {
     return this.parent.password === value;
   }),
-  gender: string(),
+  gender: string().required("You should choose gender"),
   acceptTOC: boolean()
     .required()
+    .isTrue("You should confirm T&C")
     .transform(function (value, originalValue) {
-      return value === "on";
+      return value === "on" || value === true;
     }),
   picture: string(),
   country: string(),

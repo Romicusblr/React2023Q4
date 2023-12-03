@@ -31,9 +31,7 @@ const Table: React.FC<TableProps> = ({ user1, user2 }) => {
             <table className="min-w-full text-left text-sm font-light">
               <thead className="border-b font-medium dark:border-neutral-500">
                 <tr>
-                  <th scope="col" className="px-6 py-4">
-                    Name
-                  </th>
+                  <th scope="col" className="px-6 py-4"></th>
                   <th scope="col" className="px-6 py-4">
                     Controlled
                   </th>

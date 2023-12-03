@@ -5,8 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { User, userSchema } from "@/lib/dtos/User";
 import { setControlledUser } from "@/lib/userSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 
 const ControlledFormPage: React.FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const userBefore = useAppSelector((state) => state.user.controlled);
 
@@ -17,12 +19,13 @@ const ControlledFormPage: React.FC = () => {
     reset,
   } = useForm<User>({
     resolver: yupResolver(userSchema),
+    defaultValues: userBefore
   });
-  console.log("🚀 ~ file: page.tsx:18 ~ errors:", errors);
   const onSubmit: SubmitHandler<User> = (data) => {
-    console.log("🚀 ~ file: page.tsx:22 ~ data:", data);
     dispatch(setControlledUser(data));
+    router.push("/");
   };
+  console.log("🚀 ~ file: page.tsx:19 ~ errors:", errors);
 
   const ErrorText: React.FC<{ prop: keyof User }> = ({ prop }) => {
     return <span className="align-top text-xs text-red-500 ml-1">{errors[prop]?.message}</span>;
@@ -66,7 +69,10 @@ const ControlledFormPage: React.FC = () => {
         <input {...register("password_repeat")} type="password" className="input-text" />
       </div>
       <div className="mb-5">
-        <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your gender</h3>
+        <h3 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Your gender
+          <ErrorText prop="gender" />
+        </h3>
         <ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
           <li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
             <div className="flex items-center ps-3">
@@ -105,6 +111,7 @@ const ControlledFormPage: React.FC = () => {
       <div className="mb-5">
         <label htmlFor="acceptTOC" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           Accept T&C
+          <ErrorText prop="acceptTOC" />
         </label>
         <input {...register("acceptTOC")} type="checkbox" className="input-text" />
       </div>
