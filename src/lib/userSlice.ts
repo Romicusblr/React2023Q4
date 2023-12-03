@@ -4,7 +4,7 @@ export interface User {
   name: string;
   age: number;
   email: string;
-  passwords: string;
+  password: string;
   gender: string;
   acceptTOC: boolean;
   picture: string;

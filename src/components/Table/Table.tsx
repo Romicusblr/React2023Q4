@@ -45,7 +45,14 @@ const Table: React.FC<TableProps> = ({ user1, user2 }) => {
                 </tr>
               </thead>
               <tbody>
-                <TableRow user1={user1} user2={user2} field="name"/>
+                <TableRow user1={user1} user2={user2} field="name" />
+                <TableRow user1={user1} user2={user2} field="age" />
+                <TableRow user1={user1} user2={user2} field="email" />
+                <TableRow user1={user1} user2={user2} field="password" />
+                <TableRow user1={user1} user2={user2} field="gender" />
+                <TableRow user1={user1} user2={user2} field="acceptTOC" />
+                <TableRow user1={user1} user2={user2} field="picture" />
+                <TableRow user1={user1} user2={user2} field="country" />
               </tbody>
             </table>
           </div>
